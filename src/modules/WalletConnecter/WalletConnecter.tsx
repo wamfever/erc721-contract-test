@@ -39,7 +39,7 @@ export const WalletConnecter = (props: any): JSX.Element => {
                 }
             });
         }
-    }, [address])
+    }, [address, connectWallet, history])
 
     return (
         <ModuleWrap>

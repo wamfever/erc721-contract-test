@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import Web3 from "web3";
 import detectEthereumProvider from '@metamask/detect-provider';
 import { Col, Row } from 'react-bootstrap';
@@ -28,6 +28,53 @@ export const Dashboard = (props: any): JSX.Element => {
 
     const [tableData,setTableData] = useState<Array<any>>([]);
     const [dataFetched, setFetchedData] = useState(false);
+    
+    const getQueryInfo = useCallback(() => {
+        return {
+            contract,
+            querySender: {
+                from: contextInformation.walletAddress
+            }
+        }
+    }, [contract, contextInformation.walletAddress])
+
+    const checkRoles = useCallback(async () => {
+        if (await addressIsMinter(getQueryInfo())) {
+            setIsMinter(true)
+        } else {
+            setIsMinter(false);
+        }
+
+        if (await getOwner(getQueryInfo()) === contextInformation.walletAddress) {
+            setIsOwner(true);
+        }
+        
+        setRolesChecked(true);
+    }, [contextInformation.walletAddress, getQueryInfo]);
+
+    const fetchTableData = useCallback(async () => {
+        setFetchedData(true);
+        const tokenLength = await getTokenLength(getQueryInfo());
+        let tableData = [];
+
+        for (let i = 0; i < tokenLength; i++) {
+            let tokenData = await getTokenData(getQueryInfo(), i);
+            console.log(tokenData);
+            tokenData = {
+                id: i,
+                name: tokenData.name,
+                age: tokenData.age,
+                height: tokenData.height,
+                hairColor: tokenData.hairColor,
+                eyesColor: tokenData.eyesColor,
+                mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
+            }
+            tableData.push(tokenData);
+        }
+
+        setTableData(tableData);
+    }, [getQueryInfo])
+
 
     useEffect(() => {
         if (!contract && contextInformation.walletAddress) {
@@ -43,31 +90,8 @@ export const Dashboard = (props: any): JSX.Element => {
             fetchTableData();
         }
 
-    }, [contextInformation, isMinter, tableData])
-
-    const getQueryInfo = () => {
-        return {
-            contract,
-            querySender: {
-                from: contextInformation.walletAddress
-            }
-        }
-    }
-
-    const checkRoles = async () => {
-        if (await addressIsMinter(getQueryInfo())) {
-            setIsMinter(true)
-        } else {
-            setIsMinter(false);
-        }
-
-        if (await getOwner(getQueryInfo()) === contextInformation.walletAddress) {
-            setIsOwner(true);
-        }
-        
-        setRolesChecked(true);
-    }
-
+    }, [contextInformation, isMinter, tableData, contract, dataFetched, rolesChecked, checkRoles, fetchTableData])
+    
     const filterFormsByRoles = (forOwner: boolean, forMinter: boolean) => {
         if (
             (forOwner && forMinter)
@@ -102,29 +126,6 @@ export const Dashboard = (props: any): JSX.Element => {
                 provider: provider,
             })
         }
-    }
-
-    const fetchTableData = async () => {
-        setFetchedData(true);
-        const tokenLength = await getTokenLength(getQueryInfo());
-        let tableData = [];
-
-        for (let i = 0; i < tokenLength; i++) {
-            let tokenData = await getTokenData(getQueryInfo(), i);
-            console.log(tokenData);
-            tokenData = {
-                id: i,
-                name: tokenData.name,
-                age: tokenData.age,
-                height: tokenData.height,
-                hairColor: tokenData.hairColor,
-                eyesColor: tokenData.eyesColor,
-                mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
-            }
-            tableData.push(tokenData);
-        }
-
-        setTableData(tableData);
     }
 
     if (!contextInformation.walletAddress) {
@@ -170,7 +171,7 @@ export const Dashboard = (props: any): JSX.Element => {
 
             case FormTypes.MintToken:
                 try {
-                    const resultedToken = await formFunc(getQueryInfo(), formValues);
+                    await formFunc(getQueryInfo(), formValues);
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
@@ -254,6 +255,7 @@ export const Dashboard = (props: any): JSX.Element => {
                                     }}
                                     handleSubmit={handleSubmit}
                                 />
+                            return null;
                         })}
                     </Col>
                     <Col xs="5">
@@ -269,6 +271,7 @@ export const Dashboard = (props: any): JSX.Element => {
                                     }}
                                     handleSubmit={handleSubmit}
                                 />
+                            return null;
                         })}
                     </Col>
                 </Row>

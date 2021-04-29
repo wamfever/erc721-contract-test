@@ -15,17 +15,10 @@ const connectWallet = async () => {
             }
             return obj;
         } catch (error) {
-            throw {
-                connectedStatus: false,
-                error,
-                status: "🦊 Connect to Metamask using the button on the top right."
-            }
+            throw new Error("🦊 Connect to Metamask using the button on the top right.")
         }
     } else {
-        throw {
-            connectedStatus: false,
-            status: "🦊 You must install Metamask into your browser: https://metamask.io/download.html"
-        }
+        throw new Error("🦊 You must install Metamask into your browser: https://metamask.io/download.html")
     } 
 };
 
