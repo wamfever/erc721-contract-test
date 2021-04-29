@@ -3,15 +3,17 @@ import Web3 from "web3";
 import detectEthereumProvider from '@metamask/detect-provider';
 import { Col, Row } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify';
+import moment from 'moment';
 
-import { AttributeTypes, FormTypes } from 'library/common/Types/enums';
-import DashboardFormConfig from 'library/utilities/DashboardFormsConfig';
 import { ContractData } from 'library/utilities/ContractData';
-import { getOwner, addressIsMinter } from 'main/api/web3.service';
+import DashboardFormConfig from 'library/utilities/DashboardFormsConfig';
+import { getOwner, addressIsMinter, getTokenLength, getTokenData } from 'main/api/web3.service';
+import { AttributeTypes, FormTypes } from 'library/common/Types/enums';
 
+import { ModuleWrap } from 'resources/Styles/GlobalStyles';
 import FormWidget from './Components/FormWidget';
 import PageTitle from 'library/common/Components/PageTitle';
-import { ModuleWrap } from 'resources/Styles/GlobalStyles';
+import DataTable from './Components/DataTable';
 
 import './Dashboard.scss';
 import 'react-toastify/dist/ReactToastify.css';
@@ -20,9 +22,12 @@ export const Dashboard = (props: any): JSX.Element => {
     const [contextInformation, setContextInformation] = useState<any>({});
     const [contract, setContract] = useState<any>();
 
-    const [rolesChecked, setRolesChecked] = useState(false);
     const [isOwner, setIsOwner] = useState(false);
     const [isMinter, setIsMinter] = useState(false);
+    const [rolesChecked, setRolesChecked] = useState(false);
+
+    const [tableData,setTableData] = useState<Array<any>>([]);
+    const [dataFetched, setFetchedData] = useState(false);
 
     useEffect(() => {
         if (!contract && contextInformation.walletAddress) {
@@ -34,7 +39,11 @@ export const Dashboard = (props: any): JSX.Element => {
             checkRoles();
         }
 
-    }, [contextInformation, isMinter])
+        if (contract && !dataFetched) {
+            fetchTableData();
+        }
+
+    }, [contextInformation, isMinter, tableData])
 
     const getQueryInfo = () => {
         return {
@@ -95,6 +104,30 @@ export const Dashboard = (props: any): JSX.Element => {
         }
     }
 
+    const fetchTableData = async () => {
+        setFetchedData(true);
+        const tokenLength = await getTokenLength(getQueryInfo());
+        console.log('toklen', tokenLength);
+        let tableData = [];
+
+        for (let i = 0; i < tokenLength; i++) {
+            let tokenData = await getTokenData(getQueryInfo(), i);
+            console.log(tokenData);
+            tokenData = {
+                id: i,
+                name: tokenData.name,
+                age: tokenData.age,
+                eyesColor: tokenData.eyesColor,
+                hairColor: tokenData.hairColor,
+                height: tokenData.height,
+                mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
+            }
+            tableData.push(tokenData);
+        }
+
+        setTableData(tableData);
+    }
+
     if (!contextInformation.walletAddress) {
         initiateWeb3();
     }
@@ -118,9 +151,10 @@ export const Dashboard = (props: any): JSX.Element => {
         switch (formType) {
             case FormTypes.GrantMinter:
                 try {
+                    console.log('aici');
                     await formFunc(getQueryInfo(), formValues);
-                    checkRoles();
                     makeToast('success');
+                    checkRoles();
                 } catch (error) {
                     makeToast(error.reason, 'error');
                 }
@@ -129,8 +163,8 @@ export const Dashboard = (props: any): JSX.Element => {
             case FormTypes.RemoveMinter:
                 try {
                     await formFunc(getQueryInfo(), formValues);
-                    checkRoles();
                     makeToast('success');
+                    checkRoles();
                 } catch (error) {
                     makeToast(error.reason, 'error');
                 }
@@ -207,7 +241,7 @@ export const Dashboard = (props: any): JSX.Element => {
     return (
         <>
             <ToastContainer/>
-            <ModuleWrap>
+            <ModuleWrap className="scrollable-area-container">
                 <PageTitle title="Dashboard" />
                 <Row className="dashboard-forms">
                     <Col xs="5">
@@ -241,6 +275,7 @@ export const Dashboard = (props: any): JSX.Element => {
                         })}
                     </Col>
                 </Row>
+                <DataTable rows={tableData}></DataTable>
             </ModuleWrap>
         </>
     )

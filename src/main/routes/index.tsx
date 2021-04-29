@@ -12,6 +12,6 @@ export const routes = [
   {
     exact: true,
     path: '/dashboard',
-    render: (props: any) => <Dashboard {...props} />,
+    render: (props: any) => <Dashboard connectWallet={() => connectWallet()} {...props} />,
   },
 ];

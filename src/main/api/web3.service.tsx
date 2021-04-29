@@ -70,10 +70,10 @@ export const addressIsMinter = (queryInfo: any) => {
     return queryInfo.contract.methods.isMinter(queryInfo.querySender.from).call();
 }
 
-export const getTokenlength = (queryInfo: any,) => {
+export const getTokenLength = (queryInfo: any) => {
     return queryInfo.contract.methods.tokensLength().call();
 }
 
-export const getTokenData = (queryInfo: any, tokenId: string) => {
+export const getTokenData = (queryInfo: any, tokenId: number) => {
     return queryInfo.contract.methods.tokenData(tokenId).call();
 }

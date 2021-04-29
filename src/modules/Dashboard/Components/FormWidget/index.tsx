@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Button } from 'react-bootstrap';
 
 import { FormTypes } from 'library/common/Types/enums';
-import FormTitle from '../FormTitle';
+import FormTitle from './FormTitle';
 
 import './styles.scss';
 

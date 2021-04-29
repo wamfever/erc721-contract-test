@@ -7,13 +7,14 @@ import './styles.scss';
 
 const MetamaskConnecter = (props: any): JSX.Element => {
 
-    const { connectWallet } = props;
-    
+    const { connectWalletAndGetAddress } = props;
+
     return (
         <>
             <Image 
+                className="metamask-image"
                 height="175" 
-                onClick={connectWallet} 
+                onClick={connectWalletAndGetAddress} 
                 src={metamask}
             />
         </>
