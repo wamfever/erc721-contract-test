@@ -59,7 +59,6 @@ export const Dashboard = (props: any): JSX.Element => {
 
         for (let i = 0; i < tokenLength; i++) {
             let tokenData = await getTokenData(getQueryInfo(), i);
-            console.log(tokenData);
             tokenData = {
                 id: i,
                 name: tokenData.name,

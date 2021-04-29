@@ -13,20 +13,22 @@ export const WalletConnecter = (props: any): JSX.Element => {
     const history = useHistory();
 
     const connectWalletAndGetAddress = async () => {
-        const result = await connectWallet()
+        const result = await connectWallet(false)
         setAddress(result.address);
     }
 
     useEffect(() => {
         if (!address) {
-            connectWallet()
+            connectWallet(true)
                 .then((result: any) => {
-                    history.push({
-                        pathname: '/dashboard',
-                        state: {
-                            address: result.address
-                        }
-                    });
+                    if (result.address) {
+                        history.push({
+                            pathname: '/dashboard',
+                            state: {
+                                address: result.address
+                            }
+                        });
+                    }
                 })
                 .catch((error: any) => {
                     console.log('Err while trying to connect wallet: ', error.status);

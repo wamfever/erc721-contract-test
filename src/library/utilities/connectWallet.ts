@@ -1,24 +1,30 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import Web3 from 'web3';
 
-const connectWallet = async () => {
+const connectWallet = async (autoLogin: boolean) => {
     const provider: any = await detectEthereumProvider({
         mustBeMetaMask: true
     });
 
     if (provider) { //check if Metamask is installed
+        
         try {
-            const userAddress = await new Web3(provider).eth.requestAccounts();
+            let userAddress;
+            if (autoLogin) {
+                userAddress = await new Web3(provider).eth.getAccounts();
+            } else {
+                userAddress = await new Web3(provider).eth.requestAccounts();
+            }
             const obj = {
                 connectedStatus: true,
                 address: userAddress[0]
             }
             return obj;
         } catch (error) {
-            throw new Error("🦊 Connect to Metamask using the button on the top right.")
+            return "🦊 Connect to Metamask using the button on the top right."
         }
     } else {
-        throw new Error("🦊 You must install Metamask into your browser: https://metamask.io/download.html")
+        return "🦊 You must install Metamask into your browser: https://metamask.io/download.html"
     } 
 };
 
