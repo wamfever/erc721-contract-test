@@ -1,46 +1,50 @@
 import { AttributeTypes } from 'library/common/Types/enums';
 
-export const grantMinter = (queryInfo: any, addressGrantedMinter: string) => {
-    return queryInfo.contract.methods.grantMinter(addressGrantedMinter)
+export const grantMinter = (queryInfo: any, { address }: any) => {
+    return queryInfo.contract.methods.grantMinter(address)
         .send(queryInfo.querySender);
 }
 
-export const removeMinter = (queryInfo: any, addressDeniedMinter: string) => {
-    return queryInfo.contract.methods.removeMinter(addressDeniedMinter)
+export const removeMinter = (queryInfo: any, { address }: any) => {
+    return queryInfo.contract.methods.removeMinter(address)
         .send(queryInfo.querySender);
 }
 
-export const transferToken = (
+export const transferToken = (queryInfo: any, { address, tokenId }: any) => {
+    return queryInfo.contract.methods.safeTransferFrom(queryInfo.querySender, address, tokenId)
+        .send(queryInfo.querySender);
+}
+
+export const mintToken = (
     queryInfo: any,
-    transferToAddress: string,
-    tokenId: number
-) => {
-    return queryInfo.contract.methods.safeTransferFrom(queryInfo.querySender, transferToAddress, tokenId)
-        .send(queryInfo.querySender);
-}
-
-export const mintToken = (queryInfo: any, tokenInformation: any) => {
+    {
+        hairColor,
+        eyesColor,
+        name,
+        height,
+        age
+    }: any
+) => {    
     return queryInfo.contract.methods.mintToken(
-        tokenInformation.name,
-        tokenInformation.age,
-        tokenInformation.eyesColor,
-        tokenInformation.hairColor,
-        tokenInformation.height
+        hairColor,
+        eyesColor,
+        name,
+        height,
+        age
     ).send(queryInfo.querySender);
 }
 
 export const changeTokenAttribute = (
     queryInfo: any,
+    { tokenId, newInformation }: any,
     attributeType: number,
-    tokenId: string,
-    newInformation: string | number
 ) => {
     switch (attributeType) {
         case AttributeTypes.Age:
             return queryInfo.contract.methods.changeAge(tokenId, newInformation)
                 .send(queryInfo.querySender);
 
-        case AttributeTypes.EyeColor:
+        case AttributeTypes.EyesColor:
             return queryInfo.contract.methods.changeEyesColor(tokenId, newInformation)
                 .send(queryInfo.querySender);
 
@@ -49,6 +53,10 @@ export const changeTokenAttribute = (
                 .send(queryInfo.querySender);
 
         case AttributeTypes.Height:
+            return queryInfo.contract.methods.changeHeight(tokenId, newInformation)
+                .send(queryInfo.querySender);
+
+        case AttributeTypes.Name:
             return queryInfo.contract.methods.changeHeight(tokenId, newInformation)
                 .send(queryInfo.querySender);
     }

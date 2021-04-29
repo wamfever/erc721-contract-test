@@ -1,6 +1,19 @@
 export enum AttributeTypes {
     Age,
-    EyeColor,
+    EyesColor,
     HairColor,
+    Name,
     Height
+}
+
+export enum FormTypes {
+    GrantMinter,
+    RemoveMinter,
+    TransferToken,
+    MintToken,
+    ChangeAge,
+    ChangeEyesColor,
+    ChangeHeirColor,
+    ChangeHeight,
+    ChangeName
 }
