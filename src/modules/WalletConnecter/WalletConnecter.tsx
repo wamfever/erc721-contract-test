@@ -9,10 +9,12 @@ import './WalletConnecter.scss';
 
 export const WalletConnecter = (props: any): JSX.Element => {
     const { connectWallet } = props;
-    const [address, setAddress] = useState<string>("");
+    const [ address, setAddress ] = useState<string>("");
+    const [ showWarning, setShowWarning ] = useState<boolean>(false);
     const history = useHistory();
 
     const connectWalletAndGetAddress = async () => {
+        setShowWarning(true);
         const result = await connectWallet(false)
         setAddress(result.address);
     }
@@ -51,7 +53,10 @@ export const WalletConnecter = (props: any): JSX.Element => {
                 connectWalletAndGetAddress={connectWalletAndGetAddress}
             />
             <span className="click-to-connect">
-                Click on the logo above if you want to connect your wallet to the app, but denied the initial pop-up.
+                Click on the logo above if you want to connect your wallet to the app.
             </span>
+            {showWarning && <span className="click-to-connect">
+                Please accept Metamask request. If you closed the metamask window, press the logo again.
+            </span>}
         </ModuleWrap>
 )};
