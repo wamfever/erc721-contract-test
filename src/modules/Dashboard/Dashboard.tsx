@@ -107,7 +107,6 @@ export const Dashboard = (props: any): JSX.Element => {
     const fetchTableData = async () => {
         setFetchedData(true);
         const tokenLength = await getTokenLength(getQueryInfo());
-        console.log('toklen', tokenLength);
         let tableData = [];
 
         for (let i = 0; i < tokenLength; i++) {
@@ -117,9 +116,9 @@ export const Dashboard = (props: any): JSX.Element => {
                 id: i,
                 name: tokenData.name,
                 age: tokenData.age,
-                eyesColor: tokenData.eyesColor,
-                hairColor: tokenData.hairColor,
                 height: tokenData.height,
+                hairColor: tokenData.hairColor,
+                eyesColor: tokenData.eyesColor,
                 mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
             }
             tableData.push(tokenData);
@@ -151,7 +150,6 @@ export const Dashboard = (props: any): JSX.Element => {
         switch (formType) {
             case FormTypes.GrantMinter:
                 try {
-                    console.log('aici');
                     await formFunc(getQueryInfo(), formValues);
                     makeToast('success');
                     checkRoles();
@@ -173,7 +171,6 @@ export const Dashboard = (props: any): JSX.Element => {
             case FormTypes.MintToken:
                 try {
                     const resultedToken = await formFunc(getQueryInfo(), formValues);
-                    console.log('res', resultedToken);
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
@@ -207,7 +204,7 @@ export const Dashboard = (props: any): JSX.Element => {
                 }
                 return;
 
-            case FormTypes.ChangeHeirColor:
+            case FormTypes.ChangeHairColor:
                 try {
                     await formFunc(getQueryInfo(), formValues, AttributeTypes.HairColor);
                     makeToast('success');

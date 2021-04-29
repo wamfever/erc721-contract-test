@@ -13,7 +13,7 @@ export enum FormTypes {
     MintToken,
     ChangeAge,
     ChangeEyesColor,
-    ChangeHeirColor,
+    ChangeHairColor,
     ChangeHeight,
     ChangeName
 }

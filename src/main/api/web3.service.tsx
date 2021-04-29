@@ -11,7 +11,7 @@ export const removeMinter = (queryInfo: any, { address }: any) => {
 }
 
 export const transferToken = (queryInfo: any, { address, tokenId }: any) => {
-    return queryInfo.contract.methods.safeTransferFrom(queryInfo.querySender, address, tokenId)
+    return queryInfo.contract.methods.safeTransferFrom(queryInfo.querySender.from, address, tokenId)
         .send(queryInfo.querySender);
 }
 

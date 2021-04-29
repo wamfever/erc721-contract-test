@@ -57,7 +57,7 @@ const DashboardFormsConfig = [
         title: 'Change Hair Color',
         forOwner: true,
         forMinter: true,
-        formType: FormTypes.ChangeName,
+        formType: FormTypes.ChangeHairColor,
         fields: [{
             controlId: 'tokenId',
             label: 'Token ID',
@@ -66,7 +66,7 @@ const DashboardFormsConfig = [
         },
         {
             controlId: 'newInformation',
-            label: 'New Name',
+            label: 'New Hair Color',
             value: '',
             type: 'text'
         }],
