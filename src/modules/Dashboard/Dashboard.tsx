@@ -58,16 +58,7 @@ export const Dashboard = (props: any): JSX.Element => {
         let tableData = [];
 
         for (let i = 0; i < tokenLength; i++) {
-            let tokenData = await getTokenData(getQueryInfo(), i);
-            tokenData = {
-                id: i,
-                name: tokenData.name,
-                age: tokenData.age,
-                height: tokenData.height,
-                hairColor: tokenData.hairColor,
-                eyesColor: tokenData.eyesColor,
-                mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
-            }
+            const tokenData = await getTokenInformation(i);
             tableData.push(tokenData);
         }
 
@@ -146,6 +137,25 @@ export const Dashboard = (props: any): JSX.Element => {
         if (type === 'error') toast.error('There was a problem with your request!', option);
     }
 
+    const getTokenInformation = async (tokenId: number) => {
+        let tokenData = await getTokenData(getQueryInfo(), tokenId);
+        tokenData = {
+            id: tokenId,
+            name: tokenData.name,
+            age: tokenData.age,
+            height: tokenData.height,
+            hairColor: tokenData.hairColor,
+            eyesColor: tokenData.eyesColor,
+            mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
+        }
+        return tokenData
+    }
+
+    const addMintedTokenToTable = async (tokenId: number) => {
+        const tokenData = await getTokenInformation(tokenId);
+        setTableData(oldTableData => [...oldTableData, tokenData]);
+    }
+
     const handleSubmit = async (formFunc: any, formType: number, formValues: any) => {
         switch (formType) {
             case FormTypes.GrantMinter:
@@ -172,6 +182,7 @@ export const Dashboard = (props: any): JSX.Element => {
                 try {
                     await formFunc(getQueryInfo(), formValues);
                     makeToast('success');
+                    addMintedTokenToTable(await getTokenLength(getQueryInfo()) - 1)
                 } catch (error) {
                     makeToast(error.reason, 'error');
                 }

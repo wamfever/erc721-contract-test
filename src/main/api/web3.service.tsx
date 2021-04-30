@@ -18,17 +18,17 @@ export const transferToken = (queryInfo: any, { address, tokenId }: any) => {
 export const mintToken = (
     queryInfo: any,
     {
+        name,
         hairColor,
         eyesColor,
-        name,
         height,
         age
     }: any
 ) => {    
     return queryInfo.contract.methods.mintToken(
+        name,
         hairColor,
         eyesColor,
-        name,
         height,
         age
     ).send(queryInfo.querySender);
