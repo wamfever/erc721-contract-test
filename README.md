@@ -28,11 +28,12 @@ We have 2 non-exclusive roles for each connected wallet:
 - owner
 - minter (isMinter -> true)
 
-We have 8 widgets:
+We have 9 widgets:
 - Grant minter (owner only)
 - Remove minter (owner only)
 - Mint (minter only)
 - Transfer (all connected users)
+- Change Name (all connected users can use it on their proprietary tokens)
 - Change Hair Color (all connected users can use it on their proprietary tokens)
 - Change Eyes Color (all connected users can use it on their proprietary tokens)
 - Change Height (all connected users can use it on their proprietary tokens)
