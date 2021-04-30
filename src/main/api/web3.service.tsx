@@ -37,7 +37,7 @@ export const mintToken = (
 export const changeTokenAttribute = (
     queryInfo: any,
     { tokenId, newInformation }: any,
-    attributeType: number,
+    attributeType: string,
 ) => {
     switch (attributeType) {
         case AttributeTypes.Age:

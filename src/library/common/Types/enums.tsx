@@ -1,9 +1,9 @@
 export enum AttributeTypes {
-    Age,
-    EyesColor,
-    HairColor,
-    Name,
-    Height
+    Age = 'age',
+    EyesColor = 'eyesColor',
+    HairColor = 'hairColor',
+    Name = 'name',
+    Height = 'height'
 }
 
 export enum FormTypes {

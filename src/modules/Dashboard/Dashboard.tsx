@@ -156,6 +156,16 @@ export const Dashboard = (props: any): JSX.Element => {
         setTableData(oldTableData => [...oldTableData, tokenData]);
     }
 
+    const updateTokenAndAddToTable = async (formFunc: any, formValues: any, attributeType: string) => {
+        await formFunc(getQueryInfo(), formValues, AttributeTypes.EyesColor);
+        const tokenData = await getTokenInformation(formValues.tokenId);
+        setTableData((oldTableData) => {
+            const newArray = [...oldTableData]; 
+            newArray[formValues.tokenId][attributeType] = formValues.newInformation;
+            return newArray;
+        })
+    }
+
     const handleSubmit = async (formFunc: any, formType: number, formValues: any) => {
         switch (formType) {
             case FormTypes.GrantMinter:
@@ -199,7 +209,7 @@ export const Dashboard = (props: any): JSX.Element => {
 
             case FormTypes.ChangeAge:
                 try {
-                    await formFunc(getQueryInfo(), formValues, AttributeTypes.Age);
+                    await updateTokenAndAddToTable(formFunc, formValues, AttributeTypes.Age);
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
@@ -208,7 +218,7 @@ export const Dashboard = (props: any): JSX.Element => {
 
             case FormTypes.ChangeEyesColor:
                 try {
-                    await formFunc(getQueryInfo(), formValues, AttributeTypes.EyesColor);
+                    await updateTokenAndAddToTable(formFunc, formValues, AttributeTypes.EyesColor);
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
@@ -217,7 +227,7 @@ export const Dashboard = (props: any): JSX.Element => {
 
             case FormTypes.ChangeHairColor:
                 try {
-                    await formFunc(getQueryInfo(), formValues, AttributeTypes.HairColor);
+                    await updateTokenAndAddToTable(formFunc, formValues, AttributeTypes.HairColor);
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
@@ -226,7 +236,7 @@ export const Dashboard = (props: any): JSX.Element => {
             
             case FormTypes.ChangeHeight:
                 try {
-                    await formFunc(getQueryInfo(), formValues, AttributeTypes.Height);
+                    await updateTokenAndAddToTable(formFunc, formValues, AttributeTypes.Height);
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
@@ -235,7 +245,8 @@ export const Dashboard = (props: any): JSX.Element => {
 
             case FormTypes.ChangeName:
                 try {
-                    await formFunc(getQueryInfo(), formValues, AttributeTypes.Name);
+                    await updateTokenAndAddToTable(formFunc, formValues, AttributeTypes.Name);
+
                     makeToast('success');
                 } catch (error) {
                     makeToast(error.reason, 'error');
