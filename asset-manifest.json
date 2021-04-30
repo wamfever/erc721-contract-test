@@ -1,25 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.8529f6d1.chunk.css",
-    "main.js": "/static/js/main.c9bcdb44.chunk.js",
-    "main.js.map": "/static/js/main.c9bcdb44.chunk.js.map",
-    "runtime-main.js": "/static/js/runtime-main.e0bf25ec.js",
-    "runtime-main.js.map": "/static/js/runtime-main.e0bf25ec.js.map",
-    "static/css/2.108bfca2.chunk.css": "/static/css/2.108bfca2.chunk.css",
-    "static/js/2.a0b85642.chunk.js": "/static/js/2.a0b85642.chunk.js",
-    "static/js/2.a0b85642.chunk.js.map": "/static/js/2.a0b85642.chunk.js.map",
-    "static/js/3.275c909b.chunk.js": "/static/js/3.275c909b.chunk.js",
-    "static/js/3.275c909b.chunk.js.map": "/static/js/3.275c909b.chunk.js.map",
-    "index.html": "/index.html",
-    "static/css/2.108bfca2.chunk.css.map": "/static/css/2.108bfca2.chunk.css.map",
-    "static/css/main.8529f6d1.chunk.css.map": "/static/css/main.8529f6d1.chunk.css.map",
-    "static/js/2.a0b85642.chunk.js.LICENSE.txt": "/static/js/2.a0b85642.chunk.js.LICENSE.txt",
-    "static/media/metamask.a4d5e8f2.jpg": "/static/media/metamask.a4d5e8f2.jpg"
+    "main.css": "./static/css/main.8529f6d1.chunk.css",
+    "main.js": "./static/js/main.c9bcdb44.chunk.js",
+    "main.js.map": "./static/js/main.c9bcdb44.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.a992392f.js",
+    "runtime-main.js.map": "./static/js/runtime-main.a992392f.js.map",
+    "static/css/2.108bfca2.chunk.css": "./static/css/2.108bfca2.chunk.css",
+    "static/js/2.29e0c090.chunk.js": "./static/js/2.29e0c090.chunk.js",
+    "static/js/2.29e0c090.chunk.js.map": "./static/js/2.29e0c090.chunk.js.map",
+    "static/js/3.275c909b.chunk.js": "./static/js/3.275c909b.chunk.js",
+    "static/js/3.275c909b.chunk.js.map": "./static/js/3.275c909b.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/2.108bfca2.chunk.css.map": "./static/css/2.108bfca2.chunk.css.map",
+    "static/css/main.8529f6d1.chunk.css.map": "./static/css/main.8529f6d1.chunk.css.map",
+    "static/js/2.29e0c090.chunk.js.LICENSE.txt": "./static/js/2.29e0c090.chunk.js.LICENSE.txt",
+    "static/media/metamask.a4d5e8f2.jpg": "./static/media/metamask.a4d5e8f2.jpg"
   },
   "entrypoints": [
-    "static/js/runtime-main.e0bf25ec.js",
+    "static/js/runtime-main.a992392f.js",
     "static/css/2.108bfca2.chunk.css",
-    "static/js/2.a0b85642.chunk.js",
+    "static/js/2.29e0c090.chunk.js",
     "static/css/main.8529f6d1.chunk.css",
     "static/js/main.c9bcdb44.chunk.js"
   ]
