@@ -52,6 +52,20 @@ export const Dashboard = (props: any): JSX.Element => {
         setRolesChecked(true);
     }, [contextInformation.walletAddress, getQueryInfo]);
 
+    const getTokenInformation = useCallback(async (tokenId: number) => {
+        let tokenData = await getTokenData(getQueryInfo(), tokenId);
+        tokenData = {
+            id: tokenId,
+            name: tokenData.name,
+            age: tokenData.age,
+            height: tokenData.height,
+            hairColor: tokenData.hairColor,
+            eyesColor: tokenData.eyesColor,
+            mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
+        }
+        return tokenData
+    }, [getQueryInfo])
+
     const fetchTableData = useCallback(async () => {
         setFetchedData(true);
         const tokenLength = await getTokenLength(getQueryInfo());
@@ -63,7 +77,7 @@ export const Dashboard = (props: any): JSX.Element => {
         }
 
         setTableData(tableData);
-    }, [getQueryInfo])
+    }, [getQueryInfo, getTokenInformation])
 
 
     useEffect(() => {
@@ -137,20 +151,6 @@ export const Dashboard = (props: any): JSX.Element => {
         if (type === 'error') toast.error('There was a problem with your request!', option);
     }
 
-    const getTokenInformation = async (tokenId: number) => {
-        let tokenData = await getTokenData(getQueryInfo(), tokenId);
-        tokenData = {
-            id: tokenId,
-            name: tokenData.name,
-            age: tokenData.age,
-            height: tokenData.height,
-            hairColor: tokenData.hairColor,
-            eyesColor: tokenData.eyesColor,
-            mintedTimeStamp: moment.unix(tokenData.mintedTimestamp).format("MM/DD/YYYY")
-        }
-        return tokenData
-    }
-
     const addMintedTokenToTable = async (tokenId: number) => {
         const tokenData = await getTokenInformation(tokenId);
         setTableData(oldTableData => [...oldTableData, tokenData]);
@@ -158,7 +158,6 @@ export const Dashboard = (props: any): JSX.Element => {
 
     const updateTokenAndAddToTable = async (formFunc: any, formValues: any, attributeType: string) => {
         await formFunc(getQueryInfo(), formValues, AttributeTypes.EyesColor);
-        const tokenData = await getTokenInformation(formValues.tokenId);
         setTableData((oldTableData) => {
             const newArray = [...oldTableData]; 
             newArray[formValues.tokenId][attributeType] = formValues.newInformation;
