@@ -7,7 +7,7 @@ export const routes = [
   {
     exact: true,
     path: '/',
-    render: (props: any) => <WalletConnecter connectWallet={connectWallet} {...props} />
+    render: (props: any) => <WalletConnecter connectWallet={connectWallet} shouldAutoConnect={true} {...props} />
   },
   {
     exact: true,
