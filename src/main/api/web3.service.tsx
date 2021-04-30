@@ -77,3 +77,7 @@ export const getTokenLength = (queryInfo: any) => {
 export const getTokenData = (queryInfo: any, tokenId: number) => {
     return queryInfo.contract.methods.tokenData(tokenId).call();
 }
+
+export const ownerOf = (queryInfo: any, tokenId: number) => {
+    return queryInfo.contract.methods.ownerOf(tokenId).call();
+}

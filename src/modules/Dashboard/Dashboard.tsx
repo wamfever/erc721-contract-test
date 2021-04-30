@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import { ContractData } from 'library/utilities/ContractData';
 import DashboardFormConfig from 'library/utilities/DashboardFormsConfig';
-import { getOwner, addressIsMinter, getTokenLength, getTokenData } from 'main/api/web3.service';
+import { getOwner, addressIsMinter, getTokenLength, getTokenData, ownerOf } from 'main/api/web3.service';
 import { AttributeTypes, FormTypes } from 'library/common/Types/enums';
 
 import { ModuleWrap } from 'resources/Styles/GlobalStyles';
@@ -72,12 +72,15 @@ export const Dashboard = (props: any): JSX.Element => {
         let tableData = [];
 
         for (let i = 0; i < tokenLength; i++) {
-            const tokenData = await getTokenInformation(i);
-            tableData.push(tokenData);
+            const ownerOfToken = await ownerOf(getQueryInfo(), i);
+            if (ownerOfToken === contextInformation.walletAddress) {
+                const tokenData = await getTokenInformation(i);
+                tableData.push(tokenData);
+            }
         }
 
         setTableData(tableData);
-    }, [getQueryInfo, getTokenInformation])
+    }, [getQueryInfo, getTokenInformation, contextInformation.walletAddress])
 
 
     useEffect(() => {
